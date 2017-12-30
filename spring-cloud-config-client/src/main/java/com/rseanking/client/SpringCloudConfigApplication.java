@@ -1,8 +1,8 @@
-package com.rseanking.springcloudconfig;
+package com.rseanking.client;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableAutoConfiguration
 @RestController
 public class SpringCloudConfigApplication {
+	@Value("${hello.greeting}")
+	private String greeting;
 	
 	@RequestMapping("/hello")
 	@ResponseBody
 	public String greeting() {
-		return "Hello World!";
+		return greeting;
 	}
 
 	public static void main(String[] args) {
