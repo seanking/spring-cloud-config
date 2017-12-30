@@ -14,11 +14,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.rseanking.client.SpringCloudConfigApplication;
+import com.rseanking.client.ClientApplication;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { SpringCloudConfigApplication.class })
-public class SpringCloudConfigApplicationTests {
+@SpringBootTest(classes = { ClientApplication.class })
+public class ClientApplicationTests {
 
 	@Autowired
 	private WebApplicationContext context;

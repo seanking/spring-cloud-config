@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @EnableAutoConfiguration
 @RestController
-public class SpringCloudConfigApplication {
+public class ClientApplication {
 	@Value("${hello.greeting}")
 	private String greeting;
 	
@@ -20,6 +20,6 @@ public class SpringCloudConfigApplication {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringCloudConfigApplication.class, args);
+		SpringApplication.run(ClientApplication.class, args);
 	}
 }
