@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableAutoConfiguration
 @RestController
 public class ClientApplication {
-	@Value("${hello.greeting}")
+	@Value("${hello.greeting:Hello}")
 	private String greeting;
 	
 	@RequestMapping("/hello")

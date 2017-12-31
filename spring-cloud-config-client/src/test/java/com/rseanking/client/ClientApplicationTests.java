@@ -32,6 +32,6 @@ public class ClientApplicationTests {
 
 	@Test
 	public void shouldSayHello() throws Exception {
-		mvc.perform(get("/hello")).andExpect(content().string("Hello World!")).andExpect(status().isOk());
+		mvc.perform(get("/hello")).andExpect(content().string("Hello!")).andExpect(status().isOk());
 	}
 }
