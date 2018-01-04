@@ -15,7 +15,8 @@ The server can provide configuration data from a filesystem or Git. This demo fo
 
 Let's introduce a Spring Boot application with a endpoint that provides a greeting. 
 
-```package com.rseanking.client;
+```java
+package com.rseanking.client;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -43,7 +44,7 @@ public class ClientApplication {
 ```
 Since the `${hello.greeting}` isn't provided the `/hello` endpoint will default to saying 'Hello' .
 
-```
+```http
 $ curl -XGET -s http://localhost:8080/hello -w '\n'
 Hello
 ```
@@ -86,7 +87,7 @@ public class ServerApplication {
 
 Let's update the configuration to serve configuration properties from the `configRepo` directory.   
 
-```
+```yml
 server.port: 8888
 spring.config.name=configserver
 
@@ -104,7 +105,7 @@ $ echo 'hello.greeting=Hello Dev!' > src/main/resources/configRep/pring-cloud-co
 
 The dev configuration for `spring-cloud-config-client` can now be accessed via `http://localhost:8888/spring-cloud-config-client/dev`. The results will provide the configuration for the default profile and the properties being overridden by the dev profile.
 
-```
+```json
 $ curl -XGET -s http://localhost:8888/spring-cloud-config-client/dev | jq
 {
   "name": "spring-cloud-config-client",
@@ -150,7 +151,7 @@ Introduce the `spring-cloud-config-client` dependency to provide the libraries n
 
 Introduce a `src/main/resources/bootstrap.properties`. The `bootstrap.properties` file will configure the client to communicate with the configuration server. 
 
-```
+```yml
 spring.profiles.active=dev
 spring.application.name=spring-cloud-config-client
 spring.cloud.config.uri=http://localhost:8888
@@ -161,14 +162,14 @@ The `spring.application.name` and `spring.profiles.active` are important as they
 
 Running the greeting service with an active profile of `dev` will produce `Hello Dev!`. 
 
-```
+```http
 $ curl -XGET -s http://localhost:8080/hello -w '\n'
 Hello Dev!
 ```
 
 Running the greeting service without an active profile will produce `Hello!`, because it will use the `default` profile.
 
-```
+```http
 $ curl -XGET -s http://localhost:8080/hello -w '\n'
 Hello!
 ```
