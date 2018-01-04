@@ -83,7 +83,6 @@ public class ServerApplication {
     }
 }
 ```
-Configure the application
 
 Let's update the configuration to serve configuration properties from the `configRepo` directory.   
 
