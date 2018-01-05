@@ -42,7 +42,7 @@ public class ClientApplication {
 	}
 }
 ```
-Since the `${hello.greeting}` isn't provided the `/hello` endpoint will default to saying 'Hello' .
+Since the `${hello.greeting}` property isn't provided the `/hello` endpoint will default to saying 'Hello' .
 
 ```http
 $ curl -XGET -s http://localhost:8080/hello -w '\n'
