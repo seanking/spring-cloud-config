@@ -11,9 +11,9 @@ The server uses a pattern for serving application properties. The application na
 
 The server can provide configuration data from a filesystem or Git. This demo focus on using the filesystem to manage configuration data because it is easier to package up into a demo. However, applications intended for production should use Git. Git will allow the configuration data to be managed like source code. 
 
-## Introduce a Spring Boot app
+## Introduce a Greeting Service
 
-Let's introduce a Spring Boot application with a endpoint that provides a greeting. 
+Start by introducing a Spring Boot application provides a greeting via a `/hello` endpoint. 
 
 ```java
 package com.rseanking.client;
@@ -42,7 +42,7 @@ public class ClientApplication {
 	}
 }
 ```
-Since the `${hello.greeting}` property isn't provided the `/hello` endpoint will default to saying 'Hello' .
+Since the `${hello.greeting}` property isn't provided the `/hello` endpoint the default greeting will be 'Hello' .
 
 ```http
 $ curl -XGET -s http://localhost:8080/hello -w '\n'
@@ -51,7 +51,7 @@ Hello
 
 ## Building a Configuration Server
 
-Let's introduce a configuration server to support our new application. The configuration server will provide a different greeting for each profile.
+Next, introduce a configuration server to support the greeting service. The configuration server will provide a different greeting for each profile (default, dev, prod, ...).
 
 Introduce the `spring-cloud-config-server` dependency to provide the libraries needed to quickly spin up a cloud configuration server.
 
@@ -66,7 +66,7 @@ Introduce the `spring-cloud-config-server` dependency to provide the libraries n
 </dependencies>
 ```
 
-Implementation of the server couldn't be much simpler. Annotation a Spring Boot application with the `@EnableConfigServer` annotation.
+Next, introduce a Spring Boot application and annotate it with the `@EnableConfigServer` annotation. It's that simple!
 
 ```java
 package com.rseanking.server;
@@ -85,7 +85,7 @@ public class ServerApplication {
 }
 ```
 
-Let's update the configuration to serve configuration properties from the `configRepo` directory.   
+Update the configuration to serve configuration properties from the `src/main/resources/configRepo`.   
 
 ```yml
 server.port: 8888
@@ -96,19 +96,20 @@ spring.profiles.active=native
 # Repository of configuration properties
 spring.cloud.config.server.native.search-locations: classpath:configRepo/ 
 ```
-Let's introduce configuration data for our `spring-cloud-config-client` application into `src/main/resources/configRepo`. 
+
+Introduce configuration data the `greeting-service` application. 
 
 ```
-$ echo 'hello.greeting=Hello!' > src/main/resources/configRep/pring-cloud-config-client.properties
-$ echo 'hello.greeting=Hello Dev!' > src/main/resources/configRep/pring-cloud-config-client-dev.properties
+$ echo 'hello.greeting=Hello!' > src/main/resources/configRep/greeting-service.properties
+$ echo 'hello.greeting=Hello Dev!' > src/main/resources/configRep/greeting-service-dev.properties
 ```
 
-The dev configuration for `spring-cloud-config-client` can now be accessed via `http://localhost:8888/spring-cloud-config-client/dev`. The results will provide the configuration for the default profile and the properties being overridden by the dev profile.
+The dev configuration for `greeting-service` can now be accessed via `http://localhost:8888/greeting-service/dev`. The results will provide the configuration for the default profile and the properties being overridden by the dev profile.
 
 ```json
-$ curl -XGET -s http://localhost:8888/spring-cloud-config-client/dev | jq
+$ curl -XGET -s http://localhost:8888/greeting-service/dev | jq
 {
-  "name": "spring-cloud-config-client",
+  "name": "greeting-service",
   "profiles": [
     "dev"
   ],
@@ -117,13 +118,13 @@ $ curl -XGET -s http://localhost:8888/spring-cloud-config-client/dev | jq
   "state": null,
   "propertySources": [
     {
-      "name": "classpath:configRepo/spring-cloud-config-client-dev.properties",
+      "name": "classpath:configRepo/greeting-service-dev.properties",
       "source": {
         "hello.greeting": "Hello Dev!"
       }
     },
     {
-      "name": "classpath:configRepo/spring-cloud-config-client.properties",
+      "name": "classpath:configRepo/greeting-service.properties",
       "source": {
         "hello.greeting": "Hello!"
       }
@@ -134,9 +135,7 @@ $ curl -XGET -s http://localhost:8888/spring-cloud-config-client/dev | jq
 
 ## Update the Greeting Service
 
-Introduce the spring The greeting service can now be updated to utilize the configuration server. 
-
-Introduce the `spring-cloud-config-client` dependency to provide the libraries needed to update our greeting service to communicate with the configuration server.
+The greeting service can now be updated to utilize the configuration server. Introduce the `spring-cloud-starter-config` dependency to provide the libraries needed to for the greeting service to communicate with the configuration server.
 
 ```xml
 <dependencies>
@@ -152,15 +151,18 @@ Introduce the `spring-cloud-config-client` dependency to provide the libraries n
 Introduce a `src/main/resources/bootstrap.properties`. The `bootstrap.properties` file will configure the client to communicate with the configuration server. 
 
 ```yml
+spring.application.name=greeting-service
 spring.profiles.active=dev
-spring.application.name=spring-cloud-config-client
+
 spring.cloud.config.uri=http://localhost:8888
+
 # Disable security for demo
 management.security.enabled=false
 ```
-The `spring.application.name` and `spring.profiles.active` are important as they will be the application name and profile used to build a URL to acquire the application properties from the configuration server. The `spring.cloud.config.uri` identifies the location of the configuration server.
 
-Running the greeting service with an active profile of `dev` will produce `Hello Dev!`. 
+The `spring.cloud.config.uri`, `spring.application.name` and `spring.profiles.active` are important properties as they will be used to build a URL to acquire the application properties from the configuration server (URL: `http://localhost:8888/greeting-service/dev`). 
+
+Running the greeting service with an active profile of `dev` will now produce `Hello Dev!`. 
 
 ```http
 $ curl -XGET -s http://localhost:8080/hello -w '\n'
