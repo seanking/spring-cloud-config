@@ -88,13 +88,13 @@ public class ServerApplication {
 Update the configuration to serve configuration properties from the `src/main/resources/configRepo`.   
 
 ```yml
-server.port: 8888
+server.port=8888
 spring.config.name=configserver
 
 # Required to read from local filesytem
 spring.profiles.active=native 
 # Repository of configuration properties
-spring.cloud.config.server.native.search-locations: classpath:configRepo/ 
+spring.cloud.config.server.native.search-locations=classpath:configRepo/ 
 ```
 
 Introduce configuration data the `greeting-service` application. 
