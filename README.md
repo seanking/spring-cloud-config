@@ -5,9 +5,9 @@ The dynamic nature of the deployment makes configuring the application difficult
 
 Spring Cloud Config introduces an idea of a configuration server and client to help solve the problem of serving configuration data. The Spring Config Server is a simple Spring Boot application that provides configuration properties to Spring Config Clients via HTTP (key-value pairs). 
 
-The server uses a pattern for serving application properties. The application name and profile are used to as part of a REST URL to access properties (Ex: `http://localhost:8888/$application/$profile`).
-
 ![](spring-cloud-config.png)
+
+The server uses a pattern for serving application properties. The application name and profile are used to as part of a REST URL to access properties (Ex: `http://localhost:8888/$application/$profile`).
 
 The server can provide configuration data from a filesystem or Git. This demo focus on using the filesystem to manage configuration data because it is easier to package up into a demo. However, applications intended for production should use Git. Git will allow the configuration data to be managed like source code. 
 
@@ -175,3 +175,10 @@ Running the greeting service without an active profile will produce `Hello!`, be
 $ curl -XGET -s http://localhost:8080/hello -w '\n'
 Hello!
 ```
+
+## Summary
+
+Introducing a Spring Cloud configuration server allows the configuration data to be segregated away from the applications. The segregation enables administrators to do things more effectively. An application can more easily be managed through different environments within a cloud environment. It also configuration data to be managed like a traditional code base using Git.
+
+The source for this demo can be found on GitHub: [https://github.com/seanking/spring-cloud-config](https://github.com/seanking/spring-cloud-config)
+
