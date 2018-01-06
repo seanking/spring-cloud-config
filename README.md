@@ -1,5 +1,5 @@
 # Spring Cloud Config
-The introduction of the cloud infrastructures has changed the way applications are deployed. No longer is an application assigned to a specific machine or a virtual machine. The location of a application is dynamically choosen by available resources within a cluster of machines.   
+The introduction of the cloud infrastructures have changed the way applications are deployed. No longer is an application assigned to a specific machine or a virtual machine. The location of an application is dynamically chosen by available resources within a cluster of machines.   
  
 The dynamic nature of the deployment makes configuring the application difficult. No longer will it suffice to copy configuration files around or mount volumes with configuration files. 
 
@@ -9,11 +9,11 @@ Spring Cloud Config introduces an idea of a configuration server and client to h
 
 The server uses a pattern for serving application properties. The application name and profile are used to as part of a REST URL to access properties (Ex: `http://localhost:8888/$application/$profile`).
 
-The server can provide configuration data from a filesystem or Git. This demo focus on using the filesystem to manage configuration data because it is easier to package up into a demo. However, applications intended for production should use Git. Git will allow the configuration data to be managed like source code. 
+The server can provide configuration data from a filesystem or Git. This demo focuses on using the filesystem to manage configuration data because it is easier to package up into a demo. However, applications intended for production should use Git. Git will allow the configuration data to be managed like source code. 
 
 ## Introduce a Greeting Service
 
-Start by introducing a Spring Boot application provides a greeting via a `/hello` endpoint. 
+Start by introducing a Spring Boot application that provides a greeting via a `/hello` endpoint. 
 
 ```java
 package com.rseanking.client;
@@ -42,7 +42,7 @@ public class ClientApplication {
 	}
 }
 ```
-Since the `${hello.greeting}` property isn't provided the `/hello` endpoint the default greeting will be 'Hello' .
+Since the `${hello.greeting}` property isn't provided the `/hello` endpoint will default the greeting to 'Hello'.
 
 ```http
 $ curl -XGET -s http://localhost:8080/hello -w '\n'
@@ -135,7 +135,7 @@ $ curl -XGET -s http://localhost:8888/greeting-service/dev | jq
 
 ## Update the Greeting Service
 
-The greeting service can now be updated to utilize the configuration server. Introduce the `spring-cloud-starter-config` dependency to provide the libraries needed to for the greeting service to communicate with the configuration server.
+The greeting service can now be updated to utilize the configuration server. Introduce the `spring-cloud-starter-config` dependency to provide the libraries needed for the greeting service to communicate with the configuration server.
 
 ```xml
 <dependencies>
@@ -169,7 +169,7 @@ $ curl -XGET -s http://localhost:8080/hello -w '\n'
 Hello Dev!
 ```
 
-Running the greeting service without an active profile will produce `Hello!`, because it will use the `default` profile.
+Running the greeting service without an active profile will produce `Hello!`, because it uses the `default` profile.
 
 ```http
 $ curl -XGET -s http://localhost:8080/hello -w '\n'
@@ -178,7 +178,7 @@ Hello!
 
 ## Summary
 
-Introducing a Spring Cloud configuration server allows the configuration data to be segregated away from the applications. The segregation enables administrators to do things more effectively. An application can more easily be managed through different environments within a cloud environment. It also configuration data to be managed like a traditional code base using Git.
+Introducing a Spring Cloud configuration server allows the configuration data to be segregated away from the applications. The segregation enables administrators to do things more effectively. An application can more easily be managed through different environments within a cloud environment. It also allows the configuration data to be managed like a traditional code base using Git.
 
 The source for this demo can be found on GitHub: [https://github.com/seanking/spring-cloud-config](https://github.com/seanking/spring-cloud-config)
 
