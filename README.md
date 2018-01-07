@@ -66,7 +66,7 @@ Introduce the `spring-cloud-config-server` dependency to provide the libraries n
 </dependencies>
 ```
 
-Next, introduce a Spring Boot application and annotate it with the `@EnableConfigServer` annotation. It's that simple!
+Define a Spring Boot application and annotate it with the `@EnableConfigServer` annotation. 
 
 ```java
 package com.rseanking.server;
