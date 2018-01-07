@@ -31,21 +31,21 @@ public class ServerApplicationTests {
 
 	@Test
 	public void shouldProvideDefaultConfigurationForClient() throws Exception {
-		mvc.perform(get("/spring-cloud-config-client/default"))
+		mvc.perform(get("/greeting-service/default"))
 			.andExpect(jsonPath("propertySources[0].source.['hello.greeting']", equalTo("Hello!")))
 			.andExpect(status().isOk());
 	}
 	
 	@Test
 	public void shouldProvideDevConfigurationForClient() throws Exception {
-		mvc.perform(get("/spring-cloud-config-client/dev"))
+		mvc.perform(get("/greeting-service/dev"))
 			.andExpect(jsonPath("propertySources[0].source.['hello.greeting']", equalTo("Hello Dev!")))
 			.andExpect(status().isOk());
 	}
 	
 	@Test
 	public void shouldProvideProdConfigurationForClient() throws Exception {
-		mvc.perform(get("/spring-cloud-config-client/prod"))
+		mvc.perform(get("/greeting-service/prod"))
 			.andExpect(jsonPath("propertySources[0].source.['hello.greeting']", equalTo("Hello World!")))
 			.andExpect(status().isOk());
 	}
