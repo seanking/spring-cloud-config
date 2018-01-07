@@ -85,7 +85,7 @@ public class ServerApplication {
 }
 ```
 
-Update the configuration to serve configuration properties from the `src/main/resources/configRepo`.   
+Update the server's configuration to serve configuration properties from `src/main/resources/configRepo`.   
 
 ```yml
 server.port=8888
@@ -97,14 +97,14 @@ spring.profiles.active=native
 spring.cloud.config.server.native.search-locations=classpath:configRepo/ 
 ```
 
-Introduce configuration data the `greeting-service` application. 
+Introduce configuration data to support the `greeting-service` application. These setting will supply default setttings and support for a dev profile.
 
 ```
 $ echo 'hello.greeting=Hello!' > src/main/resources/configRep/greeting-service.properties
 $ echo 'hello.greeting=Hello Dev!' > src/main/resources/configRep/greeting-service-dev.properties
 ```
 
-The dev configuration for `greeting-service` can now be accessed via `http://localhost:8888/greeting-service/dev`. The results will provide the configuration for the default profile and the properties being overridden by the dev profile.
+The dev configuration for the `greeting-service` can now be accessed via `http://localhost:8888/greeting-service/dev`.
 
 ```json
 $ curl -XGET -s http://localhost:8888/greeting-service/dev | jq
@@ -132,10 +132,11 @@ $ curl -XGET -s http://localhost:8888/greeting-service/dev | jq
   ]
 }
 ```
+The results contain the default properties for the `greeting-service` and the properties being overridden by the dev profile.
 
 ## Update the Greeting Service
 
-The greeting service can now be updated to utilize the configuration server. Introduce the `spring-cloud-starter-config` dependency to provide the libraries needed for the greeting service to communicate with the configuration server.
+The greeting service can now be updated to utilize the configuration server. Introduce the `spring-cloud-starter-config` dependency into the pom.xml to provide the libraries needed for the greeting service to communicate with the configuration server.
 
 ```xml
 <dependencies>
