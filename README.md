@@ -51,7 +51,7 @@ Hello
 
 ## Building a Configuration Server
 
-Next, introduce a configuration server to support the greeting service. The configuration server will provide a different greeting for each profile (default, dev, prod, ...).
+Next, introduce a configuration server to support the greeting service. The configuration server will provide a different greeting for each profile (default, dev, prod, etc).
 
 Introduce the `spring-cloud-config-server` dependency to provide the libraries needed to quickly spin up a cloud configuration server.
 
