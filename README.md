@@ -1,19 +1,19 @@
 # Spring Cloud Config
-The introduction of the cloud infrastructures have changed the way applications are deployed. No longer is an application assigned to a specific machine or a virtual machine. The location of an application is dynamically chosen by available resources within a cluster of machines.   
+The introduction of the cloud infrastructures has changed the way applications are deployed. No longer is an application assigned to a specific machine or a virtual machine. The location of an application is dynamically chosen by available resources within a cluster of machines.
  
-The dynamic nature of the deployment makes configuring the application difficult. No longer will it suffice to copy configuration files around or mount volumes with configuration files. 
+The dynamic nature of the deployment makes configuring the application difficult. No longer will it suffice to copy configuration files around or mount volumes with configuration files.
 
-Spring Cloud Config introduces an idea of a configuration server and client to help solve the problem of providing configuration data. The Spring Config Server is a simple Spring Boot application that provides configuration properties to clients via HTTP (key-value pairs). 
+Spring Cloud Config introduces an idea of a configuration server and client to help solve the problem by segregating configuration data away from applications. The Spring Config Server is a simple Spring Boot application that provides configuration properties to clients via HTTP (key-value pairs).
 
-The server uses a pattern for serving application properties. The application name and profile are used to as part of a REST URL to access properties (Ex: `http://localhost:8888/$application/$profile`).
+The server uses a pattern for serving application properties. The application name and profile are used as part of a REST URL to access properties  (Ex: `http://localhost:8888/$application/$profile`).
 
 ![](spring-cloud-config.png)
 
-The server can provide configuration data from a filesystem or Git repository. This demo focuses on using the filesystem to manage configuration data because it is easier to package up into a demo. However, applications intended for production should use Git. Git will allow the configuration data to be managed like source code. 
+The server can provide configuration data from a filesystem or Git repository. This demo focuses on using the filesystem to manage configuration data because it is easier to package up into a demo. However, applications intended for production should use Git. Git will allow the configuration data to be managed like source code.
 
 ## Introduce a Greeting Service
 
-Start by introducing a Spring Boot application that provides a greeting via a `/hello` endpoint. 
+Start by introducing a Spring Boot application that provides a greeting via a `/hello` endpoint.
 
 ```java
 package com.rseanking.client;
@@ -42,7 +42,7 @@ public class ClientApplication {
 	}
 }
 ```
-Since the `${hello.greeting}` property isn't provided the `/hello` endpoint will default the greeting to 'Hello'.
+Since the `${hello.greeting}` property isn't provided, the `/hello` endpoint will default the greeting to 'Hello'.
 
 ```http
 $ curl -XGET -s http://localhost:8080/hello -w '\n'
@@ -85,7 +85,7 @@ public class ServerApplication {
 }
 ```
 
-Update the server's configuration to serve configuration properties from `src/main/resources/configRepo`.   
+Update the server's configuration to serve configuration properties from `src/main/resources/configRepo`.
 
 ```yml
 server.port=8888
@@ -132,6 +132,7 @@ $ curl -XGET -s http://localhost:8888/greeting-service/dev | jq
   ]
 }
 ```
+
 The results contain the default properties for the `greeting-service` and the properties being overridden by the dev profile.
 
 ## Update the Greeting Service
@@ -149,7 +150,7 @@ The greeting service can now be updated to utilize the configuration server. Int
 </dependencies>
 ```
 
-Introduce a `src/main/resources/bootstrap.properties`. The `bootstrap.properties` file will configure the client to communicate with the configuration server. 
+Introduce a `src/main/resources/bootstrap.properties`. The `bootstrap.properties` file will configure the client to communicate with the configuration server.
 
 ```yml
 spring.application.name=greeting-service
@@ -163,7 +164,7 @@ management.security.enabled=false
 
 The `spring.cloud.config.uri`, `spring.application.name` and `spring.profiles.active` are important properties as they will be used to build a URL to acquire the application properties from the configuration server (URL: `http://localhost:8888/greeting-service/dev`). 
 
-Running the greeting service with an active profile of `dev` will now produce `Hello Dev!`. 
+Running the greeting service with an active profile of `dev` will now produce `Hello Dev!`.
 
 ```http
 $ curl -XGET -s http://localhost:8080/hello -w '\n'
@@ -179,7 +180,7 @@ Hello!
 
 ## Summary
 
-Introducing a Spring Cloud configuration server allows the configuration data to be segregated away from the applications. The segregation enables administrators to do things more effectively. An application can more easily be managed through different environments within a cloud environment. It also allows the configuration data to be managed like a traditional code base using Git.
+Introducing a Spring Cloud Config server allows the configuration data to be segregated away from the applications. The segregation enables administrators to do things more effectively, such as promote an application throughout multiple environments. It also allows the configuration data to be managed like a traditional code base using Git.
 
 The source for this demo can be found on GitHub: [https://github.com/seanking/spring-cloud-config](https://github.com/seanking/spring-cloud-config)
 
